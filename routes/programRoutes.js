@@ -1,16 +1,18 @@
-const express = require("express");
-const protect = require("../middleware/authMiddleware");
+const express = require('express');
 const router = express.Router();
+const { authenticate, authorize } = require('../middleware/auth');
 
-// @route   GET /api/programs
-// @desc    Get all programs (protected)
-// @access  Private
-router.get("/", protect, async (req, res) => {
-  try {
-    res.json({ message: `Welcome ${req.user.name}, you can access programs!` });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error });
-  }
-});
+// Example route handlers (replace with your actual handlers)
+const getPrograms = (req, res) => {
+  res.send('Get programs');
+};
+
+const createProgram = (req, res) => {
+  res.send('Create program');
+};
+
+// Define routes
+router.get('/programs', authenticate, authorize(['admin', 'user']), getPrograms);
+router.post('/programs', authenticate, authorize(['admin']), createProgram);
 
 module.exports = router;
