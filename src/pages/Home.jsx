@@ -1,20 +1,26 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar.jsx";
-import Home from "./pages/Home.jsx";
-import Dashboard from "./components/Dashboard.jsx";
-import Login from "./pages/Login.jsx";
+import React from "react";
+import { Link } from "react-router-dom"; // Import Link for routing
+import "./Home.css"; // Import CSS for styling
 
-const App = () => {
+const Home = () => {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
+    <div>
+      {/* Navigation Bar */}
+      <nav className="navbar">
+      </nav>
+
+      {/* Hero Section */}
+      <header className="hero">
+        <div className="hero-content">
+          <h1>Submit all your valuable research work here</h1>
+          <p>Centralized storage for all student research submissions</p>
+          <Link to="/try-now" className="btn\ hero-btn">
+            Try Now
+          </Link>
+        </div>
+      </header>
+    </div>
   );
 };
 
-export default App;
+export default Home;

@@ -1,49 +1,53 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { useDropzone } from "react-dropzone";
 
 const FileUpload = () => {
-  const [files, setFiles] = useState([]);
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState(null);
 
-  const onDrop = (acceptedFiles) => {
-    setFiles(acceptedFiles);
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
   };
 
-  const uploadFiles = async () => {
-    const formData = new FormData();
-    files.forEach((file) => formData.append("files", file));
+  const handleUpload = async () => {
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
 
-    try {
-      // Sending files to the server
-      await axios.post("http://localhost:5000/api/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      alert("Upload successful!");
-    } catch (error) {
-      console.error(error);
-      alert("Error uploading files.");
+      try {
+        const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
+        const response = await axios.post("/api/upload/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`
+          }
+        });
+        alert(`File "${file.name}" uploaded successfully!`);
+      } catch (error) {
+        if (error.response) {
+          // Server responded with a status other than 200 range
+          setError(`Upload failed: ${error.response.data.message}`);
+        } else if (error.request) {
+          // Request was made but no response received
+          setError("Upload failed: No response from server.");
+        } else {
+          // Something else happened
+          setError(`Upload failed: ${error.message}`);
+        }
+      }
+    } else {
+      alert("Please select a file to upload.");
     }
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
   return (
     <div>
-      <div {...getRootProps({ className: "dropzone" })}>
-        <input {...getInputProps()} />
-        <p>Drag & drop files here, or click to select files</p>
-      </div>
-      <ul>
-        {files.map((file, index) => (
-          <li key={index}>{file.name}</li>
-        ))}
-      </ul>
-      <button onClick={uploadFiles}>Upload</button>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleUpload}>Upload</button>
+      {file && <p>Selected File: {file.name}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };
 
 export default FileUpload;
-        

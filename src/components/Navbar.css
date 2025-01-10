@@ -1,0 +1,42 @@
+/* Navbar container */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: teal !important; /* Force the cyan background */
+    color: black !important; /* Ensure text color is visible */
+  }
+  
+  /* Navbar title */
+  nav h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  /* Navbar list */
+  ul {
+    list-style-type: none;
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Navbar links as buttons */
+  .btn-navbar {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    color: white;
+    background-color: #e0b1cb;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-navbar:hover {
+    background-color: #1d4ed8;
+  }
+  
